@@ -10,6 +10,10 @@ import com.sues.entity.DishFlavor;
 import com.sues.service.CategoryService;
 import com.sues.service.DishFlavorService;
 import com.sues.service.DishService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/dish")
 @Slf4j
+@Api(tags = "菜品相关接口")
 public class DishController {
 
     @Autowired
@@ -47,6 +52,7 @@ public class DishController {
 
     //新增菜品
     @PostMapping
+    @ApiOperation(value = "新增套餐接口")
     public R<String> save(@RequestBody DishDto dishDto) {
         log.info(dishDto.toString());
 
@@ -65,6 +71,11 @@ public class DishController {
 
     //菜品信息分页查询
     @GetMapping("/page")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "分页数", required = true),
+            @ApiImplicitParam(name = "name", value = "菜品名称", required = false)
+    })
     public R<Page> page(int page, int pageSize, String name) {
         //构造dish分页构造器对象
         Page<Dish> pageInfo = new Page<>(page, pageSize);
